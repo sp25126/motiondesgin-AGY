@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FreshFlow B2B Motion & UI Suite (Pins #1 - #5)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       CORE DESIGN TOKENS & RESET
+       ========================================================================== */
+    :root {
+      --cerulean-blue: #0284C7;
+      --cerulean-dark: #0369A1;
+      --cerulean-light: #38BDF8;
+      --cerulean-pale: #E0F2FE;
+      --cerulean-glow: rgba(2, 132, 199, 0.4);
+      --cerulean-gradient: linear-gradient(135deg, #0284C7 0%, #0077B6 55%, #0369A1 100%);
+      --primary-green: #15803D;
+      --primary-green-glow: rgba(21, 128, 61, 0.35);
+      --primary-green-light: #F0FDF4;
+      --primary-green-border: #BBF7D0;
+      --neon-green: #22C55E;
+      --blue-accent: #0284C7;
+      --blue-glow: rgba(2, 132, 199, 0.35);
+      --whatsapp-green: #25D366;
+      --whatsapp-glow: rgba(37, 211, 102, 0.4);
+      --bg-dark: #060D17;
+      --bg-card-dark: #0A1424;
+      --cream-canvas: #FAF7F2;
+      --cream-card: #FBF9F5;
+      --cream-border: #E8E3D7;
+      --midnight-pill: #08121E;
+      --text-dark: #111827;
+      --text-muted: #4B5563;
+      --text-subtle: #6B7280;
+      --border-light: #E5E7EB;
+      --border-gray: #D1D5DB;
+      --ease-snappy: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-pop: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: #FFFFFF;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient background grid */
+    .bg-grid-overlay {
+      position: fixed;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle at 80% 20%, rgba(21, 128, 61, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 20% 80%, rgba(37, 99, 235, 0.1) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Navigation Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(8, 13, 10, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #22C55E 0%, #15803D 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #FFFFFF;
+      box-shadow: 0 0 16px rgba(34, 197, 94, 0.4);
+    }
+
+    .brand-text h1 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-text p {
+      font-size: 12px;
+      color: #94A3B8;
+    }
+
+    /* Tabs Navigation */
+    .pin-nav-tabs {
+      display: flex;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .pin-tab-btn {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pin-tab-btn:hover {
+      color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .pin-tab-btn.active {
+      color: #FFFFFF;
+      background: var(--primary-green);
+      box-shadow: 0 2px 8px rgba(21, 128, 61, 0.4);
+    }
+
+    /* Main Container */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px 60px 24px;
+      flex: 1;
+    }
+
+    .view-section {
+      display: none;
+      animation: fadeIn 0.35s var(--ease-snappy) forwards;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Section Header */
+    .section-header-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 28px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 16px;
+    }
+
+    .section-title-wrap .pin-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      border-radius: 999px;
+      color: #4ADE80;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .section-title-wrap h2 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title-wrap p {
+      color: #94A3B8;
+      font-size: 14px;
+      margin-top: 4px;
+    }
+
+    .action-controls-row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .ctrl-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .ctrl-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .ctrl-btn.primary {
+      background: var(--primary-green);
+      border-color: var(--primary-green);
+    }
+
+    .ctrl-btn.primary:hover {
+      background: #16a34a;
+      box-shadow: 0 0 14px var(--primary-green-glow);
+    }
+
+    /* Split layout: Visual Stage + Specs Drawer */
+    .stage-and-specs-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .specs-panel {
+      background: rgba(17, 24, 21, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .specs-panel h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #E2E8F0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .spec-item {
+      border-left: 2px solid var(--primary-green);
+      padding-left: 12px;
+    }
+
+    .spec-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #94A3B8;
+      font-weight: 600;
+    }
+
+    .spec-code {
+      font-family: 'JetBrains Mono', Consolas, monospace;
+      font-size: 12px;
+      color: #86EFAC;
+      margin-top: 4px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 10px;
+      border-radius: 6px;
+      line-height: 1.4;
+      word-break: break-all;
+    }
+
+    .visual-canvas {
+      min-height: 600px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: #0D1410;
+    }
+
+    /* ==========================================================================
+       PROMPT 1: HERO BUSINESS PROMISE UI (FOR PIN #1)
+       Developer CSS/DOM Specs:
+       • Layout: display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 640px;
+       • Typography (Headline): Font: Inter, Weight: 700, Size: 48px, Line-height: 1.1, Color: #111827.
+       • Typography (Subtext): Font: Inter, Weight: 500, Size: 18px, Color: #4B5563.
+       • Buttons: Primary background: #15803D, Secondary border: 2px solid #E5E7EB
+       • Animation (CSS): @keyframes slideUpFade { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+       • Easing curve: cubic-bezier(0.16, 1, 0.3, 1)
+       ========================================================================== */
+    .pin1-canvas {
+      background: 
+        radial-gradient(circle at 80% 20%, rgba(21, 128, 61, 0.3) 0%, transparent 60%),
+        radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.15) 0%, transparent 60%),
+        linear-gradient(145deg, #070D09 0%, #101B14 100%);
+      padding: 60px 40px;
+    }
+
+    .pin1-glass-card {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 24px;
+      max-width: 640px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      padding: 48px 44px;
+      box-shadow: 
+        0 25px 60px -15px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(21, 128, 61, 0.15);
+      animation: slideUpFade 0.7s var(--ease-snappy) forwards;
+    }
+
+    .pin1-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--primary-green-light);
+      border: 1px solid var(--primary-green-border);
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-green);
+    }
+
+    .pin1-headline {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 44px;
+      line-height: 1.1;
+      color: var(--text-dark);
+      letter-spacing: -0.03em;
+      min-height: 145px;
+    }
+
+    .typing-cursor {
+      display: inline-block;
+      width: 4px;
+      height: 40px;
+      background-color: var(--primary-green);
+      margin-left: 6px;
+      vertical-align: text-bottom;
+      animation: blink 0.8s infinite;
+      border-radius: 2px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .pin1-subtext {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 18px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.6s var(--ease-snappy);
+    }
+
+    .pin1-subtext.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pin1-counter {
+      color: var(--primary-green);
+      font-weight: 700;
+      font-size: 22px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .pin1-buttons-row {
+      display: flex;
+      flex-direction: row;
+      gap: 16px;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .btn-primary-green {
+      background: var(--primary-green);
+      color: #FFFFFF;
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.25s var(--ease-snappy);
+      box-shadow: 0 4px 14px rgba(21, 128, 61, 0.35);
+    }
+
+    .btn-primary-green:hover {
+      background: #166534;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(21, 128, 61, 0.45);
+    }
+
+    .btn-secondary-outline {
+      background: transparent;
+      border: 2px solid var(--border-light);
+      color: var(--text-dark);
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.25s var(--ease-snappy);
+    }
+
+    .btn-secondary-outline:hover {
+      border-color: #9CA3AF;
+      background: #F9FAFB;
+      transform: translateY(-2px);
+    }
+
+    .pin1-buttons-row.visible .btn-primary-green {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.1s;
+    }
+
+    .pin1-buttons-row.visible .btn-secondary-outline {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.25s;
+    }
+
+    @keyframes slideUpFade {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ==========================================================================
+       PROMPT 2: HIGH-DENSITY SKU TABLE VIEW (FOR PIN #2)
+       Developer CSS/DOM Specs:
+       • Layout: CSS Grid layout grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;
+       • Card Structure: border: 1px solid #E5E7EB, border-radius: 8px, background: #FFFFFF, box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+       • Image Spec: aspect-ratio: 16/9, object-fit: cover, border-radius: 8px 8px 0 0, high-res WebP format.
+       • Quantity Stepper UI: display: flex; align-items: center; justify-content: space-between; border: 1px solid #D1D5DB; border-radius: 6px; padding: 4px 8px; height: 36px; Buttons (- and +) use color: #15803D.
+       • Animation: Smooth 0.3s transform: translateY(-2px) and box-shadow increase on card :hover.
+       ========================================================================== */
+    .pin2-canvas {
+      background: #F8FAFC;
+      padding: 0;
+      width: 100%;
+      position: relative;
+      min-height: 680px;
+    }
+
+    .pin2-split-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 680px;
+      overflow: hidden;
+    }
+
+    /* Legacy dull sheet (Left background) */
+    .pin2-legacy-layer {
+      position: absolute;
+      inset: 0;
+      background: #ECEFF1;
+      padding: 32px 36px;
+      font-family: 'Courier New', Courier, monospace;
+      color: #37474F;
+    }
+
+    .legacy-banner {
+      background: #CFD8DC;
+      padding: 10px 16px;
+      border: 1px solid #B0BEC5;
+      font-weight: bold;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .legacy-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #FFFFFF;
+      border: 1px solid #B0BEC5;
+      font-size: 12px;
+    }
+
+    .legacy-table th, .legacy-table td {
+      border: 1px solid #CFD8DC;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    .legacy-table th {
+      background: #ECEFF1;
+      font-weight: bold;
+    }
+
+    /* Modern Wholesale Grid (Right wipe reveal) */
+    .pin2-modern-layer {
+      position: absolute;
+      inset: 0;
+      background: #F8FAFC;
+      padding: 32px 36px;
+      overflow-y: auto;
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      transition: clip-path 0.05s linear;
+    }
+
+    .pin2-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .pin2-filters {
+      display: flex;
+      gap: 8px;
+    }
+
+    .pin2-chip {
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px solid #E2E8F0;
+      background: #FFFFFF;
+      color: #475569;
+    }
+
+    .pin2-chip.active {
+      background: var(--primary-green);
+      border-color: var(--primary-green);
+      color: #FFFFFF;
+    }
+
+    /* CSS Grid Layout */
+    .pin2-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    /* Card Structure */
+    .pin2-card {
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      background: #FFFFFF;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .pin2-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px -5px rgba(21, 128, 61, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Image Spec */
+    .pin2-card-img {
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+      width: 100%;
+      display: block;
+      background: #E2E8F0;
+    }
+
+    .pin2-card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .pin2-card-title {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--text-dark);
+      line-height: 1.3;
+    }
+
+    .pin2-card-meta {
+      font-size: 12px;
+      color: var(--text-subtle);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .pin2-card-price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-top: auto;
+      padding-top: 8px;
+    }
+
+    .pin2-price {
+      font-weight: 800;
+      font-size: 18px;
+      color: var(--text-dark);
+    }
+
+    .pin2-unit {
+      font-size: 12px;
+      color: var(--text-subtle);
+    }
+
+    /* Quantity Stepper UI */
+    .pin2-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      padding: 4px 8px;
+      height: 36px;
+      margin-top: 8px;
+    }
+
+    .pin2-stepper button {
+      background: transparent;
+      border: none;
+      color: #15803D;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .pin2-stepper button:hover {
+      background: rgba(21, 128, 61, 0.1);
+      border-radius: 4px;
+    }
+
+    .pin2-stepper-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    /* Vertical Glowing Laser Line */
+    .pin2-laser-slider {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: #FFFFFF;
+      box-shadow: 
+        0 0 10px #FFFFFF,
+        0 0 20px #22C55E,
+        0 0 40px #15803D,
+        0 0 80px rgba(34, 197, 94, 0.8);
+      z-index: 100;
+      cursor: ew-resize;
+      transform: translateX(-50%);
+    }
+
+    .laser-handle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #15803D;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 15px #22C55E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-size: 12px;
+      user-select: none;
+    }
+
+    /* ==========================================================================
+       PROMPT 3: DUAL CTA USER PATH (FOR PIN #3)
+       Developer CSS/DOM Specs:
+       • Layout: display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 32px; background: #FFFFFF; border-radius: 16px; (On mobile, switch to grid-template-columns: 1fr;).
+       • Card 1 (Order Sheet): border: 2px solid #E5E7EB. Hover state: border-color: #15803D, box-shadow: 0 0 15px rgba(21, 128, 61, 0.1).
+       • Card 2 (Price List): border: 2px solid #E5E7EB. Hover state: border-color: #2563EB (Blue), box-shadow: 0 0 15px rgba(37, 99, 235, 0.1).
+       • Typography: Titles at 20px bold, Subtext at 14px regular (#6B7280). Links styled as inline flex with align-items: center; gap: 4px; font-weight: 600;.
+       • Animation: Base transition transition: all 0.25s ease-out;. When the modal mounts, trigger a scale(0.95) to scale(1) spring animation.
+       ========================================================================== */
+    .pin3-canvas {
+      background: 
+        radial-gradient(circle at 30% 20%, rgba(21, 128, 61, 0.25) 0%, transparent 55%),
+        radial-gradient(circle at 75% 75%, rgba(37, 99, 235, 0.2) 0%, transparent 55%),
+        linear-gradient(180deg, #0A140F 0%, #070B09 100%);
+      padding: 40px;
+    }
+
+    .pin3-modal-wrapper {
+      max-width: 780px;
+      width: 100%;
+      background: #FFFFFF;
+      border-radius: 20px;
+      box-shadow: 0 35px 70px -15px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      transform: scale(0.95) translateY(20px);
+      opacity: 0;
+      transition: all 0.4s var(--ease-snappy);
+    }
+
+    .pin3-modal-wrapper.mounted {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    .pin3-modal-header {
+      padding: 24px 32px 16px 32px;
+      border-bottom: 1px solid #F1F5F9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pin3-modal-header h3 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .pin3-modal-header p {
+      font-size: 14px;
+      color: var(--text-subtle);
+      margin-top: 4px;
+    }
+
+    /* Modal Grid Spec */
+    .pin3-modal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding: 32px;
+      background: #FFFFFF;
+      border-radius: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .pin3-modal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Card 1 (Order Sheet) */
+    .pin3-card-ordersheet {
+      border: 2px solid #E5E7EB;
+      border-radius: 14px;
+      padding: 24px;
+      background: #FAFAFA;
+      transition: all 0.25s ease-out;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+    }
+
+    .pin3-card-ordersheet:hover, .pin3-card-ordersheet.active-hover {
+      border-color: #15803D;
+      box-shadow: 0 0 15px rgba(21, 128, 61, 0.1), 0 8px 24px rgba(21, 128, 61, 0.08);
+      background: #F0FDF4;
+      transform: translateY(-2px);
+    }
+
+    /* Card 2 (Price List) */
+    .pin3-card-pricelist {
+      border: 2px solid #E5E7EB;
+      border-radius: 14px;
+      padding: 24px;
+      background: #FAFAFA;
+      transition: all 0.25s ease-out;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 14px;
+      cursor: pointer;
+    }
+
+    .pin3-card-pricelist:hover, .pin3-card-pricelist.active-hover {
+      border-color: #2563EB;
+      box-shadow: 0 0 15px rgba(37, 99, 235, 0.1), 0 8px 24px rgba(37, 99, 235, 0.08);
+      background: #EFF6FF;
+      transform: translateY(-2px);
+    }
+
+    .pin3-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pin3-card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-dark);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .pin3-card-subtext {
+      font-size: 14px;
+      font-weight: 400;
+      color: #6B7280;
+      line-height: 1.5;
+      font-family: 'Inter', sans-serif;
+      flex: 1;
+    }
+
+    .pin3-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      margin-top: 8px;
+    }
+
+    .pin3-link.green {
+      color: #15803D;
+    }
+
+    .pin3-link.blue {
+      color: #2563EB;
+    }
+
+    /* ==========================================================================
+       PROMPT 4: COLD CHAIN VISUAL FLOW (FOR PIN #4)
+       Developer CSS/DOM Specs:
+       • Layout: display: flex; justify-content: space-between; align-items: flex-start; position: relative; width: 100%; padding: 24px 0;
+       • Connecting Line (Background): position: absolute; top: 32px; left: 0; right: 0; height: 2px; border-top: 2px dashed #E5E7EB; z-index: 1;
+       • Icons (Nodes): 5 distinct div containers, z-index: 2, background: #FFFFFF, border-radius: 50%, padding: 12px, border: 2px solid #15803D. Inside: 24x24px SVG icons (stroke-width: 2px, stroke: #15803D).
+       • Animation (CSS/JS): Use CSS custom properties for a stroke dash offset animation to make the connecting line fill up with #15803D sequentially. Icon entry: staggered animation-delay: 0.2s, 0.4s, 0.6s... with a cubic-bezier(0.34, 1.56, 0.64, 1) pop effect.
+       ========================================================================== */
+    .pin4-canvas {
+      background: 
+        radial-gradient(ellipse at 50% 20%, rgba(21, 128, 61, 0.22) 0%, transparent 60%),
+        linear-gradient(180deg, #070D0A 0%, #0F1A13 100%);
+      padding: 60px 40px;
+    }
+
+    .pin4-infographic-card {
+      width: 100%;
+      max-width: 920px;
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 40px 36px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .pin4-flow-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      width: 100%;
+      padding: 24px 0;
+    }
+
+    .pin4-connecting-line {
+      position: absolute;
+      top: 32px;
+      left: 24px;
+      right: 24px;
+      height: 2px;
+      border-top: 2px dashed #E5E7EB;
+      z-index: 1;
+    }
+
+    .pin4-active-line {
+      position: absolute;
+      top: 32px;
+      left: 24px;
+      height: 3px;
+      background: #15803D;
+      box-shadow: 0 0 10px #22C55E;
+      z-index: 1;
+      width: 0%;
+      transition: width 1.8s var(--ease-snappy);
+    }
+
+    .pin4-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 130px;
+      text-align: center;
+      z-index: 2;
+      opacity: 0;
+      transform: scale(0.4);
+      transition: all 0.5s var(--ease-pop);
+    }
+
+    .pin4-node.popped {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Icons (Nodes) Spec */
+    .pin4-node-circle {
+      z-index: 2;
+      background: #FFFFFF;
+      border-radius: 50%;
+      padding: 12px;
+      border: 2px solid #15803D;
+      width: 52px;
+      height: 52px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .pin4-node.active-stage .pin4-node-circle {
+      background: #15803D;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.8), 0 4px 12px rgba(21, 128, 61, 0.4);
+    }
+
+    .pin4-node.active-stage .pin4-node-circle svg {
+      stroke: #FFFFFF;
+    }
+
+    .pin4-node-title {
+      margin-top: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--text-dark);
+    }
+
+    .pin4-node-temp {
+      font-size: 11px;
+      font-weight: 700;
+      color: #15803D;
+      background: #F0FDF4;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-top: 4px;
+      border: 1px solid #DCFCE7;
+    }
+
+    .pin4-telemetry-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ==========================================================================
+       PROMPT 5: MOBILE STICKY CTA BOTTOM BAR (FOR PIN #5)
+       Developer CSS/DOM Specs:
+       • Positioning: position: fixed; bottom: 0; left: 0; width: 100%; z-index: 9999;
+       • Container Style: background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(0,0,0,0.05);
+       • Safe Area Padding: padding: 16px 16px env(safe-area-inset-bottom) 16px; display: flex; justify-content: space-between; align-items: center;
+       • Button UI: width: 100%; background: #25D366; (WhatsApp Green), color: #FFFFFF, font-weight: 700, border-radius: 999px, height: 48px;
+       • Animation: Entry uses transform: translateY(100%) to translateY(0) over 0.4s ease-out.
+       • WhatsApp button continuous @keyframes pulse {
+           0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+           70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); }
+           100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+         }
+       ========================================================================== */
+    .pin5-canvas {
+      background: #090E0B;
+      padding: 40px;
+    }
+
+    .iphone-chassis {
+      width: 390px;
+      height: 720px;
+      border-radius: 50px;
+      background: #1C1C1E;
+      border: 3px solid #3A3A3C;
+      box-shadow: 0 35px 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(37, 211, 102, 0.2);
+      padding: 10px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .iphone-screen {
+      width: 100%;
+      height: 100%;
+      background: #FFFFFF;
+      border-radius: 40px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .iphone-dynamic-island {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 110px;
+      height: 28px;
+      background: #000000;
+      border-radius: 16px;
+      z-index: 10000;
+    }
+
+    .iphone-status-bar {
+      height: 44px;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #000000;
+      z-index: 1000;
+    }
+
+    .iphone-content {
+      flex: 1;
+      padding: 12px 18px 90px 18px;
+      overflow-y: auto;
+      transition: filter 0.3s ease;
+    }
+
+    .iphone-content.blurred {
+      filter: blur(4px) brightness(0.95);
+    }
+
+    /* Developer spec: Mobile Sticky Bottom Bar */
+    .sticky-bottom-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 9999;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid rgba(0,0,0,0.05);
+      padding: 16px 16px 28px 16px; /* safe area padding */
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transform: translateY(100%);
+      transition: transform 0.4s ease-out;
+    }
+
+    .sticky-bottom-bar.locked {
+      transform: translateY(0);
+    }
+
+    /* WhatsApp Button Spec */
+    .whatsapp-btn {
+      width: 100%;
+      background: #25D366;
+      color: #FFFFFF;
+      font-weight: 700;
+      border-radius: 999px;
+      height: 48px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4);
+      }
+      70% {
+        box-shadow: 0 0 0 12px rgba(37, 211, 102, 0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid-overlay"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="brand-mark">
+      <div class="brand-logo-icon">F</div>
+      <div class="brand-text">
+        <h1>FreshFlow B2B Motion Suite</h1>
+        <p>Pins #1 – #5 Interactive Motion & DOM Playground</p>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="pin-nav-tabs">
+      <button class="pin-tab-btn active" onclick="switchPin('pin1')">Pin #1: Hero Promise</button>
+      <button class="pin-tab-btn" onclick="switchPin('pin2')">Pin #2: SKU Table Wipe</button>
+      <button class="pin-tab-btn" onclick="switchPin('pin3')">Pin #3: Dual CTA Path</button>
+      <button class="pin-tab-btn" onclick="switchPin('pin4')">Pin #4: Cold Chain Flow</button>
+      <button class="pin-tab-btn" onclick="switchPin('pin5')">Pin #5: Mobile Sticky Bar</button>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- ====================================================================
+         SECTION 1: PIN #1 HERO PROMISE
+         ==================================================================== -->
+    <section id="section-pin1" class="view-section active">
+      <div class="section-header-banner">
+        <div class="section-title-wrap">
+          <div class="pin-pill">Pin #1 Motion Component</div>
+          <h2>Hero Business Promise UI</h2>
+          <p>Glassmorphic card with dynamic typewriter headline, live counter slide-up, and staggered CTAs.</p>
+        </div>
+        <div class="action-controls-row">
+          <button class="ctrl-btn primary" onclick="replayPin1()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M23 4v6h-6M1 20v-6h6M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+            Replay Motion Sequence
+          </button>
+        </div>
+      </div>
+
+      <div class="stage-and-specs-grid">
+        <!-- Visual Canvas -->
+        <div class="visual-canvas pin1-canvas">
+          <div id="pin1Card" class="pin1-glass-card">
+            <div class="pin1-pill">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Farm-To-Kitchen Direct Dispatch
+            </div>
+
+            <h1 class="pin1-headline">
+              <span id="pin1TypedText"></span><span id="pin1Cursor" class="typing-cursor"></span>
+            </h1>
+
+            <div id="pin1Subtext" class="pin1-subtext">
+              <span id="pin1Count" class="pin1-counter">0</span>
+              <span>SKUs · 6-day delivery · Cold-chain handled.</span>
+            </div>
+
+            <div id="pin1Buttons" class="pin1-buttons-row">
+              <button class="btn-primary-green">
+                <span>Explore Produce Catalog</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+              <button class="btn-secondary-outline">
+                Request Sample Pack
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specs Panel -->
+        <div class="specs-panel">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Developer CSS/DOM Specs
+          </h3>
+          <div class="spec-item">
+            <div class="spec-label">Layout</div>
+            <div class="spec-code">display: flex; flex-direction: column; align-items: flex-start; gap: 24px; max-width: 640px;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Headline Typography</div>
+            <div class="spec-code">Font: Inter, Weight: 700, Size: 48px, Line-height: 1.1, Color: #111827</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Subtext Typography</div>
+            <div class="spec-code">Font: Inter, Weight: 500, Size: 18px, Color: #4B5563</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Primary Button</div>
+            <div class="spec-code">background: #15803D; color: #FFFFFF; border-radius: 8px; padding: 12px 24px;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Easing Curve</div>
+            <div class="spec-code">cubic-bezier(0.16, 1, 0.3, 1)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 2: PIN #2 SKU TABLE VIEW
+         ==================================================================== -->
+    <section id="section-pin2" class="view-section">
+      <div class="section-header-banner">
+        <div class="section-title-wrap">
+          <div class="pin-pill">Pin #2 Motion Component</div>
+          <h2>High-Density SKU Table View</h2>
+          <p>Interactive split-screen laser wiping transition from dull legacy text list to high-density wholesale card grid.</p>
+        </div>
+        <div class="action-controls-row">
+          <button class="ctrl-btn primary" onclick="autoWipePin2()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Auto Split Wipe
+          </button>
+          <button class="ctrl-btn" onclick="resetWipe(50)">50/50 Split</button>
+        </div>
+      </div>
+
+      <div class="stage-and-specs-grid">
+        <!-- Visual Canvas -->
+        <div class="visual-canvas pin2-canvas" id="pin2CanvasContainer">
+          <div class="pin2-split-container">
+            <!-- Legacy dull sheet (left / base) -->
+            <div class="pin2-legacy-layer">
+              <div class="legacy-banner">
+                <span>LEGACY B2B FAX/PRINT ORDER INVOICE (REV 2011)</span>
+                <span style="color:#C62828;">[SLOW MANUAL DATA ENTRY]</span>
+              </div>
+              <table class="legacy-table">
+                <thead>
+                  <tr>
+                    <th>ITEM CODE</th>
+                    <th>DESCRIPTION</th>
+                    <th>PACK SIZE</th>
+                    <th>UNIT PRICE</th>
+                    <th>ORDER PAR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>SKU-7721</td>
+                    <td>CARROT BUNCH HEIRLOOM 24CT</td>
+                    <td>24 BN</td>
+                    <td>$24.50</td>
+                    <td>[ 4 CASES ]</td>
+                  </tr>
+                  <tr>
+                    <td>SKU-8834</td>
+                    <td>MUSHROOM CHANTERELLE & CREMINI</td>
+                    <td>5 LB BX</td>
+                    <td>$48.00</td>
+                    <td>[ 2 FLATS ]</td>
+                  </tr>
+                  <tr>
+                    <td>SKU-9012</td>
+                    <td>TOMATO HEIRLOOM MIXED CRATE</td>
+                    <td>10 LB CR</td>
+                    <td>$38.00</td>
+                    <td>[ 6 CRATES ]</td>
+                  </tr>
+                  <tr>
+                    <td>SKU-4509</td>
+                    <td>AVOCADO HASS STAGE 3 FIRM</td>
+                    <td>24 CT</td>
+                    <td>$32.00</td>
+                    <td>[ 3 CASES ]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Modern Wholesale Grid (revealed by wipe) -->
+            <div id="pin2ModernLayer" class="pin2-modern-layer">
+              <div class="pin2-header-row">
+                <div class="pin2-filters">
+                  <div class="pin2-chip active">All 394 SKUs</div>
+                  <div class="pin2-chip">Chef Specials</div>
+                  <div class="pin2-chip">Roots & Tubers</div>
+                  <div class="pin2-chip">Fungi & Wild</div>
+                </div>
+                <div style="font-size: 13px; color: #64748B; font-weight: 600;">
+                  Live Inventory: <span style="color: #15803D;">● 99.4% Farm Ready</span>
+                </div>
+              </div>
+
+              <!-- Developer CSS Grid Spec -->
+              <div class="pin2-grid">
+                <!-- Card 1: Carrots -->
+                <div class="pin2-card">
+                  <img src="images/carrots.jpg" class="pin2-card-img" alt="Carrots">
+                  <div class="pin2-card-body">
+                    <div class="pin2-card-meta">
+                      <span>SKU-7721</span>
+                      <span style="color: #15803D; font-weight: 700;">34°F Optimal</span>
+                    </div>
+                    <div class="pin2-card-title">Organic Heirloom Rainbow Carrots</div>
+                    <div style="font-size: 11px; color: #64748B;">Origin: Salinas Valley, CA</div>
+                    <div class="pin2-card-price-row">
+                      <span class="pin2-price">$24.50</span>
+                      <span class="pin2-unit">/ Case of 24</span>
+                    </div>
+                    <!-- Quantity Stepper UI -->
+                    <div class="pin2-stepper">
+                      <button onclick="changeQty('qty1', -1)">−</button>
+                      <span id="qty1" class="pin2-stepper-val">4 cases</span>
+                      <button onclick="changeQty('qty1', 1)">+</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 2: Mushrooms -->
+                <div class="pin2-card">
+                  <img src="images/mushrooms.jpg" class="pin2-card-img" alt="Mushrooms">
+                  <div class="pin2-card-body">
+                    <div class="pin2-card-meta">
+                      <span>SKU-8834</span>
+                      <span style="color: #15803D; font-weight: 700;">33°F Chilled</span>
+                    </div>
+                    <div class="pin2-card-title">Wild Chanterelle & Cremini Box</div>
+                    <div style="font-size: 11px; color: #64748B;">Origin: Olympic Peninsula, WA</div>
+                    <div class="pin2-card-price-row">
+                      <span class="pin2-price">$48.00</span>
+                      <span class="pin2-unit">/ 5 lb Flat</span>
+                    </div>
+                    <!-- Quantity Stepper UI -->
+                    <div class="pin2-stepper">
+                      <button onclick="changeQty('qty2', -1)">−</button>
+                      <span id="qty2" class="pin2-stepper-val">2 flats</span>
+                      <button onclick="changeQty('qty2', 1)">+</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card 3: Tomatoes -->
+                <div class="pin2-card">
+                  <img src="images/tomatoes.jpg" class="pin2-card-img" alt="Tomatoes">
+                  <div class="pin2-card-body">
+                    <div class="pin2-card-meta">
+                      <span>SKU-9012</span>
+                      <span style="color: #15803D; font-weight: 700;">45°F Ambient</span>
+                    </div>
+                    <div class="pin2-card-title">Heritage Multicolored Tomatoes</div>
+                    <div style="font-size: 11px; color: #64748B;">Origin: Watsonville, CA</div>
+                    <div class="pin2-card-price-row">
+                      <span class="pin2-price">$38.00</span>
+                      <span class="pin2-unit">/ 10 lb Crate</span>
+                    </div>
+                    <!-- Quantity Stepper UI -->
+                    <div class="pin2-stepper">
+                      <button onclick="changeQty('qty3', -1)">−</button>
+                      <span id="qty3" class="pin2-stepper-val">6 crates</span>
+                      <button onclick="changeQty('qty3', 1)">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Glowing Laser Divider -->
+            <div id="pin2Laser" class="pin2-laser-slider" style="left: 70%;">
+              <div class="laser-handle">◀ ▶</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specs Panel -->
+        <div class="specs-panel">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Developer CSS/DOM Specs
+          </h3>
+          <div class="spec-item">
+            <div class="spec-label">Grid Layout</div>
+            <div class="spec-code">grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Card Structure</div>
+            <div class="spec-code">border: 1px solid #E5E7EB; border-radius: 8px; background: #FFFFFF; box-shadow: 0 1px 3px rgba(0,0,0,0.05);</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Image Spec</div>
+            <div class="spec-code">aspect-ratio: 16/9; object-fit: cover; border-radius: 8px 8px 0 0;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Quantity Stepper UI</div>
+            <div class="spec-code">display: flex; align-items: center; justify-content: space-between; border: 1px solid #D1D5DB; border-radius: 6px; padding: 4px 8px; height: 36px; Buttons: color: #15803D;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Hover Animation</div>
+            <div class="spec-code">0.3s transform: translateY(-2px) and box-shadow increase on card :hover</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 3: PIN #3 DUAL CTA USER PATH
+         ==================================================================== -->
+    <section id="section-pin3" class="view-section">
+      <div class="section-header-banner">
+        <div class="section-title-wrap">
+          <div class="pin-pill">Pin #3 Motion Component</div>
+          <h2>Dual CTA User Path</h2>
+          <p>Sleek UI modal sliding up with spring animation. Two distinct choice cards with tailored green and blue hover outer glows.</p>
+        </div>
+        <div class="action-controls-row">
+          <button class="ctrl-btn primary" onclick="triggerPin3Modal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+            Trigger Modal Spring
+          </button>
+        </div>
+      </div>
+
+      <div class="stage-and-specs-grid">
+        <!-- Visual Canvas -->
+        <div class="visual-canvas pin3-canvas">
+          <div id="pin3Modal" class="pin3-modal-wrapper mounted">
+            <div class="pin3-modal-header">
+              <div>
+                <h3>Select Your Kitchen Supply Flow</h3>
+                <p>Choose the ordering workflow best matched to your operation.</p>
+              </div>
+              <div style="cursor: pointer; color: #94A3B8; font-size: 18px;" onclick="triggerPin3Modal()">✕</div>
+            </div>
+
+            <!-- Modal Grid Spec -->
+            <div class="pin3-modal-grid">
+              <!-- Card 1: Order Sheet -->
+              <div class="pin3-card-ordersheet" onmouseenter="this.classList.add('active-hover')" onmouseleave="this.classList.remove('active-hover')">
+                <div class="pin3-icon-box" style="background: #DCFCE7; color: #15803D;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                </div>
+                <div class="pin3-card-title">Daily Order Sheet</div>
+                <div class="pin3-card-subtext">Pre-formatted Excel and CSV order sheet updated daily at 4:30 AM with fresh morning harvest par levels.</div>
+                <a href="#" class="pin3-link green">
+                  <span>Download Order Sheet (.xlsx)</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+
+              <!-- Card 2: Price List -->
+              <div class="pin3-card-pricelist" onmouseenter="this.classList.add('active-hover')" onmouseleave="this.classList.remove('active-hover')">
+                <div class="pin3-icon-box" style="background: #DBEAFE; color: #2563EB;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                </div>
+                <div class="pin3-card-title">Live Wholesale Price List</div>
+                <div class="pin3-card-subtext">Tiered volume contract pricing for restaurant groups, corporate dining, and hospitality kitchens.</div>
+                <a href="#" class="pin3-link blue">
+                  <span>View Wholesale Rates (PDF)</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specs Panel -->
+        <div class="specs-panel">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Developer CSS/DOM Specs
+          </h3>
+          <div class="spec-item">
+            <div class="spec-label">Modal Grid Layout</div>
+            <div class="spec-code">display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 32px; background: #FFFFFF; border-radius: 16px;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Card 1 (Order Sheet) Hover</div>
+            <div class="spec-code">border: 2px solid #E5E7EB; Hover: border-color: #15803D, box-shadow: 0 0 15px rgba(21, 128, 61, 0.1);</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Card 2 (Price List) Hover</div>
+            <div class="spec-code">border: 2px solid #E5E7EB; Hover: border-color: #2563EB, box-shadow: 0 0 15px rgba(37, 99, 235, 0.1);</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Typography</div>
+            <div class="spec-code">Titles at 20px bold, Subtext at 14px regular (#6B7280). Links: inline-flex, align-items: center; gap: 4px; font-weight: 600;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Spring Transition</div>
+            <div class="spec-code">scale(0.95) to scale(1) spring animation; transition: all 0.25s ease-out;</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 4: PIN #4 COLD CHAIN VISUAL FLOW
+         ==================================================================== -->
+    <section id="section-pin4" class="view-section">
+      <div class="section-header-banner">
+        <div class="section-title-wrap">
+          <div class="pin-pill">Pin #4 Motion Component</div>
+          <h2>Cold Chain Visual Flow</h2>
+          <p>Sequential 5-node supply chain infographic with neon green travelling path and cubic-bezier pop animations.</p>
+        </div>
+        <div class="action-controls-row">
+          <button class="ctrl-btn primary" onclick="runColdChainFlow()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Play Supply Chain Flow
+          </button>
+        </div>
+      </div>
+
+      <div class="stage-and-specs-grid">
+        <!-- Visual Canvas -->
+        <div class="visual-canvas pin4-canvas">
+          <div class="pin4-infographic-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div>
+                <span style="font-size: 12px; font-weight: 700; color: #15803D; text-transform: uppercase;">Real-Time Cold-Chain Protocol</span>
+                <h3 style="font-size: 22px; font-weight: 800; color: var(--text-dark); margin-top: 2px;">Harvest to Walk-In Cooler</h3>
+              </div>
+              <div style="background: #F0FDF4; border: 1px solid #BBF7D0; color: #15803D; font-size: 13px; font-weight: 700; padding: 6px 14px; border-radius: 999px;">
+                Verified 34.0°F Unbroken
+              </div>
+            </div>
+
+            <!-- Flow Row Spec -->
+            <div class="pin4-flow-row">
+              <div class="pin4-connecting-line"></div>
+              <div id="pin4ActiveLine" class="pin4-active-line"></div>
+
+              <!-- Node 1 -->
+              <div class="pin4-node popped active-stage" id="p4node1">
+                <div class="pin4-node-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2"><path d="M12 2a9 9 0 0 1 9 9c0 4.97-4.03 9-9 9A9 9 0 0 1 3 11a9 9 0 0 1 9-9Z"/><path d="M12 7v10M8 12l4-4 4 4"/></svg>
+                </div>
+                <div class="pin4-node-title">Farm Harvest</div>
+                <div class="pin4-node-temp">Ambient 52°F</div>
+              </div>
+
+              <!-- Node 2 -->
+              <div class="pin4-node popped" id="p4node2">
+                <div class="pin4-node-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/><line x1="19.07" y1="4.93" x2="4.93" y2="19.07"/></svg>
+                </div>
+                <div class="pin4-node-title">Hydro Pre-Cool</div>
+                <div class="pin4-node-temp">Chilled 34.0°F</div>
+              </div>
+
+              <!-- Node 3 -->
+              <div class="pin4-node popped" id="p4node3">
+                <div class="pin4-node-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                </div>
+                <div class="pin4-node-title">Cold Transit</div>
+                <div class="pin4-node-temp">Active 34.5°F</div>
+              </div>
+
+              <!-- Node 4 -->
+              <div class="pin4-node popped" id="p4node4">
+                <div class="pin4-node-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v4M12 14v4M16 14v4"/></svg>
+                </div>
+                <div class="pin4-node-title">Metro Hub</div>
+                <div class="pin4-node-temp">Cross-dock 34.2°F</div>
+              </div>
+
+              <!-- Node 5 -->
+              <div class="pin4-node popped" id="p4node5">
+                <div class="pin4-node-circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#15803D" stroke-width="2"><path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/><line x1="6" y1="17" x2="18" y2="17"/></svg>
+                </div>
+                <div class="pin4-node-title">Kitchen Drop</div>
+                <div class="pin4-node-temp">Ready 34.1°F</div>
+              </div>
+            </div>
+
+            <!-- Telemetry summary -->
+            <div class="pin4-telemetry-box">
+              <div>
+                <strong style="color: #0F172A; font-size: 14px;">Active Telemetry Stage: </strong>
+                <span id="p4StageText" style="color: #15803D; font-weight: 700;">Stage 1: Dawn Field Harvesting</span>
+              </div>
+              <div style="font-size: 13px; color: #64748B;">
+                GPS Seal: <span style="color: #15803D; font-weight: 700;">Locked & Untampered</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specs Panel -->
+        <div class="specs-panel">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Developer CSS/DOM Specs
+          </h3>
+          <div class="spec-item">
+            <div class="spec-label">Flow Layout</div>
+            <div class="spec-code">display: flex; justify-content: space-between; align-items: flex-start; position: relative; width: 100%; padding: 24px 0;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Connecting Dashed Line</div>
+            <div class="spec-code">position: absolute; top: 32px; left: 0; right: 0; height: 2px; border-top: 2px dashed #E5E7EB; z-index: 1;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Icons (Nodes) Container</div>
+            <div class="spec-code">z-index: 2; background: #FFFFFF; border-radius: 50%; padding: 12px; border: 2px solid #15803D; SVG: stroke-width: 2px; stroke: #15803D;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Staggered Pop Animation</div>
+            <div class="spec-code">animation-delay: 0.2s, 0.4s, 0.6s... cubic-bezier(0.34, 1.56, 0.64, 1)</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SECTION 5: PIN #5 MOBILE STICKY CTA BOTTOM BAR
+         ==================================================================== -->
+    <section id="section-pin5" class="view-section">
+      <div class="section-header-banner">
+        <div class="section-title-wrap">
+          <div class="pin-pill">Pin #5 Motion Component</div>
+          <h2>Mobile Sticky CTA Bottom Bar</h2>
+          <p>iPhone 15 Pro viewport mockup with content blur, sliding sticky bottom action bar, and continuous WhatsApp pulse animation.</p>
+        </div>
+        <div class="action-controls-row">
+          <button class="ctrl-btn primary" onclick="toggleStickyBar()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+            Toggle Sticky Bottom Bar
+          </button>
+        </div>
+      </div>
+
+      <div class="stage-and-specs-grid">
+        <!-- Visual Canvas -->
+        <div class="visual-canvas pin5-canvas">
+          <!-- iPhone 15 Pro Frame -->
+          <div class="iphone-chassis">
+            <div class="iphone-screen">
+              <div class="iphone-dynamic-island"></div>
+
+              <div class="iphone-status-bar">
+                <span>9:41</span>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <span style="font-size: 11px;">5G</span>
+                  <div style="width: 20px; height: 10px; border: 1px solid #000; border-radius: 2px; padding: 1px;">
+                    <div style="width: 75%; height: 100%; background: #000;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Scrollable App Content -->
+              <div id="iphoneContent" class="iphone-content blurred">
+                <div style="font-size: 11px; font-weight: 700; color: #15803D; margin-top: 4px;">DAILY KITCHEN SUPPLY</div>
+                <h4 style="font-size: 18px; font-weight: 800; color: var(--text-dark);">Tomorrow's Par Order</h4>
+
+                <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 12px;">
+                  <div style="display: flex; gap: 10px; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 8px; border-radius: 10px;">
+                    <img src="images/carrots.jpg" style="width: 60px; height: 60px; border-radius: 6px; object-fit: cover;">
+                    <div style="flex: 1;">
+                      <div style="font-size: 13px; font-weight: 700; color: #111827;">Rainbow Carrots</div>
+                      <div style="font-size: 11px; color: #64748B;">Salinas Valley • 24 CT</div>
+                      <div style="font-size: 13px; font-weight: 800; color: #15803D; margin-top: 4px;">$24.50 (3 cases)</div>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; gap: 10px; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 8px; border-radius: 10px;">
+                    <img src="images/mushrooms.jpg" style="width: 60px; height: 60px; border-radius: 6px; object-fit: cover;">
+                    <div style="flex: 1;">
+                      <div style="font-size: 13px; font-weight: 700; color: #111827;">Wild Chanterelle Mix</div>
+                      <div style="font-size: 11px; color: #64748B;">Olympic Peninsula • 5 LB</div>
+                      <div style="font-size: 13px; font-weight: 800; color: #15803D; margin-top: 4px;">$48.00 (2 flats)</div>
+                    </div>
+                  </div>
+
+                  <div style="display: flex; gap: 10px; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 8px; border-radius: 10px;">
+                    <img src="images/tomatoes.jpg" style="width: 60px; height: 60px; border-radius: 6px; object-fit: cover;">
+                    <div style="flex: 1;">
+                      <div style="font-size: 13px; font-weight: 700; color: #111827;">Heritage Mixed Tomatoes</div>
+                      <div style="font-size: 11px; color: #64748B;">Watsonville • 10 LB</div>
+                      <div style="font-size: 13px; font-weight: 800; color: #15803D; margin-top: 4px;">$38.00 (1 crate)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sticky Bottom Bar Spec -->
+              <div id="stickyBottomBar" class="sticky-bottom-bar locked">
+                <button class="whatsapp-btn">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF">
+                    <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm.01 1.67c2.2 0 4.26.86 5.82 2.41a8.204 8.204 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.196 8.196 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24h.02zm-3.6 4.31c-.2 0-.44.07-.67.33-.23.26-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.77 2.7 4.29 3.78.6.26 1.07.41 1.44.53.6.19 1.15.16 1.58.1.48-.07 1.48-.6 1.69-1.18.21-.58.21-1.08.15-1.18-.06-.1-.23-.17-.49-.3-.26-.13-1.48-.73-1.71-.81-.23-.09-.4-.13-.57.13-.17.26-.66.81-.81.98-.15.17-.3.19-.56.06-.26-.13-1.1-.41-2.1-1.3-.78-.69-1.3-1.55-1.45-1.81-.15-.26-.02-.4.11-.53.12-.12.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.06-.13-.57-1.37-.78-1.88-.2-.49-.41-.42-.56-.43l-.48-.01z"/>
+                  </svg>
+                  <span>Order via WhatsApp Direct</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Specs Panel -->
+        <div class="specs-panel">
+          <h3>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+            Developer CSS/DOM Specs
+          </h3>
+          <div class="spec-item">
+            <div class="spec-label">Positioning</div>
+            <div class="spec-code">position: fixed; bottom: 0; left: 0; width: 100%; z-index: 9999;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Container Style</div>
+            <div class="spec-code">background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid rgba(0,0,0,0.05);</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Safe Area Padding</div>
+            <div class="spec-code">padding: 16px 16px env(safe-area-inset-bottom) 16px; display: flex; justify-content: space-between; align-items: center;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">WhatsApp Button Spec</div>
+            <div class="spec-code">width: 100%; background: #25D366; color: #FFFFFF; font-weight: 700; border-radius: 999px; height: 48px;</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Continuous Pulse Keyframes</div>
+            <div class="spec-code">@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(37, 211, 102, 0); } 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); } }</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // ── TAB SWITCHING ────────────────────────────────────────────────────────
+    function switchPin(pinId) {
+      document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+      document.querySelectorAll('.pin-tab-btn').forEach(btn => btn.classList.remove('active'));
+      
+      const targetSec = document.getElementById('section-' + pinId);
+      if (targetSec) targetSec.classList.add('active');
+
+      const tabs = {
+        'pin1': 0, 'pin2': 1, 'pin3': 2, 'pin4': 3, 'pin5': 4
+      };
+      const activeBtn = document.querySelectorAll('.pin-tab-btn')[tabs[pinId]];
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (pinId === 'pin1') replayPin1();
+      if (pinId === 'pin4') runColdChainFlow();
+    }
+
+    // ── PIN 1: DYNAMIC TYPING & COUNTER ──────────────────────────────────────
+    let p1TypingTimer = null;
+    let p1CountTimer = null;
+
+    function replayPin1() {
+      clearTimeout(p1TypingTimer);
+      clearInterval(p1CountTimer);
+
+      const headline = "Fresh produce that shows up when your kitchen needs it.";
+      const typedSpan = document.getElementById('pin1TypedText');
+      const cursor = document.getElementById('pin1Cursor');
+      const subtext = document.getElementById('pin1Subtext');
+      const countEl = document.getElementById('pin1Count');
+      const buttons = document.getElementById('pin1Buttons');
+
+      typedSpan.textContent = '';
+      cursor.style.display = 'inline-block';
+      subtext.classList.remove('visible');
+      buttons.classList.remove('visible');
+      countEl.textContent = '0';
+
+      let charIndex = 0;
+      function typeChar() {
+        if (charIndex <= headline.length) {
+          typedSpan.textContent = headline.slice(0, charIndex);
+          charIndex++;
+          p1TypingTimer = setTimeout(typeChar, 35);
+        } else {
+          cursor.style.display = 'none';
+          // Trigger subtext counter slide up
+          setTimeout(() => {
+            subtext.classList.add('visible');
+            animateCount(0, 394, 900);
+          }, 200);
+
+          // Staggered CTA buttons
+          setTimeout(() => {
+            buttons.classList.add('visible');
+          }, 700);
+        }
+      }
+      typeChar();
+    }
+
+    function animateCount(start, end, duration) {
+      const countEl = document.getElementById('pin1Count');
+      const startTime = performance.now();
+      function update(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = Math.floor(start + (end - start) * ease);
+        countEl.textContent = current;
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          countEl.textContent = end;
+        }
+      }
+      requestAnimationFrame(update);
+    }
+
+    // ── PIN 2: SPLIT SCREEN WIPER & STEPPERS ─────────────────────────────────
+    let isDragging = false;
+    const canvasContainer = document.getElementById('pin2CanvasContainer');
+    const laser = document.getElementById('pin2Laser');
+    const modernLayer = document.getElementById('pin2ModernLayer');
+
+    function setWipePosition(percent) {
+      const clamped = Math.max(0, Math.min(100, percent));
+      laser.style.left = clamped + '%';
+      modernLayer.style.clipPath = `polygon(0 0, ${clamped}% 0, ${clamped}% 100%, 0 100%)`;
+    }
+
+    function resetWipe(pct) {
+      setWipePosition(pct);
+    }
+
+    function autoWipePin2() {
+      let current = 0;
+      setWipePosition(0);
+      const start = performance.now();
+      const duration = 1400;
+
+      function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        // Snappy bezier easing
+        const ease = progress < 0.5 ? 4 * progress * progress * progress : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+        setWipePosition(ease * 100);
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+      requestAnimationFrame(step);
+    }
+
+    laser.addEventListener('mousedown', () => isDragging = true);
+    window.addEventListener('mouseup', () => isDragging = false);
+    window.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      const rect = canvasContainer.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left;
+      const pct = (offsetX / rect.width) * 100;
+      setWipePosition(pct);
+    });
+
+    function changeQty(id, delta) {
+      const el = document.getElementById(id);
+      const parts = el.textContent.split(' ');
+      let val = parseInt(parts[0], 10) + delta;
+      if (val < 1) val = 1;
+      const unit = parts[1] || 'units';
+      el.textContent = `${val} ${unit}`;
+    }
+
+    // ── PIN 3: MODAL SPRING ──────────────────────────────────────────────────
+    function triggerPin3Modal() {
+      const modal = document.getElementById('pin3Modal');
+      modal.classList.remove('mounted');
+      setTimeout(() => {
+        modal.classList.add('mounted');
+      }, 100);
+    }
+
+    // ── PIN 4: COLD CHAIN ANIMATION ──────────────────────────────────────────
+    function runColdChainFlow() {
+      const line = document.getElementById('pin4ActiveLine');
+      const nodes = [
+        document.getElementById('p4node1'),
+        document.getElementById('p4node2'),
+        document.getElementById('p4node3'),
+        document.getElementById('p4node4'),
+        document.getElementById('p4node5')
+      ];
+      const stageText = document.getElementById('p4StageText');
+      const stageDescriptions = [
+        'Stage 1: Dawn Field Harvesting (Salinas Valley)',
+        'Stage 2: Hydro Pre-Cool (34.0°F within 90 mins)',
+        'Stage 3: Climate-Monitored Fleet Transit (IoT Telemetry)',
+        'Stage 4: Automated Metro Cold-Dock Sorting',
+        'Stage 5: Kitchen Doorstep Drop (05:45 AM)'
+      ];
+
+      // Reset
+      line.style.width = '0%';
+      nodes.forEach(n => {
+        n.classList.remove('active-stage');
+        n.classList.remove('popped');
+      });
+
+      // Animate line fill
+      setTimeout(() => {
+        line.style.width = 'calc(100% - 48px)';
+      }, 100);
+
+      // Stagger node pop
+      nodes.forEach((node, i) => {
+        setTimeout(() => {
+          node.classList.add('popped');
+          nodes.forEach(n => n.classList.remove('active-stage'));
+          node.classList.add('active-stage');
+          stageText.textContent = stageDescriptions[i];
+        }, 200 + i * 350);
+      });
+    }
+
+    // ── PIN 5: MOBILE STICKY BAR ─────────────────────────────────────────────
+    function toggleStickyBar() {
+      const bar = document.getElementById('stickyBottomBar');
+      const content = document.getElementById('iphoneContent');
+      bar.classList.toggle('locked');
+      content.classList.toggle('blurred');
+    }
+
+    // Initialize first pin on load
+    window.addEventListener('DOMContentLoaded', () => {
+      replayPin1();
+    });
+  </script>
+</body>
+</html>

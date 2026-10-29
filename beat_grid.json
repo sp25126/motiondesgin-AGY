@@ -1,0 +1,20 @@
+{
+  "bpm": 120,
+  "fps": 60,
+  "framesPerBeat": 30,
+  "events": [
+    { "frame": 0, "type": "bass_drop", "action": "particle_burst_search_bar_enter" },
+    { "frame": 30, "type": "snare", "action": "search_typing_query" },
+    { "frame": 60, "type": "kick", "action": "search_bar_pulse" },
+    { "frame": 90, "type": "impact", "action": "morph_search_to_dashboard" },
+    { "frame": 120, "type": "snare", "action": "dashboard_cards_stagger_in" },
+    { "frame": 150, "type": "hihat", "action": "chart_bars_grow" },
+    { "frame": 180, "type": "kick", "action": "live_metrics_counter_tick" },
+    { "frame": 240, "type": "snare", "action": "parallax_depth_shift" },
+    { "frame": 300, "type": "impact_drop", "action": "ui_collapse_to_3d_logo" },
+    { "frame": 360, "type": "snare", "action": "omni_brand_text_mask_in" },
+    { "frame": 450, "type": "ambient_fade", "action": "smooth_fade_outro_lockup" },
+    { "frame": 600, "type": "beat_pulse", "action": "badge_glow_pulse" },
+    { "frame": 900, "type": "fade_out", "action": "sequence_end" }
+  ]
+}
